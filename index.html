@@ -17,31 +17,29 @@
       font-family: Georgia, serif;
       background: #f8f5f0;
       color: #333;
-      min-height: 100vh;
     }
 
     .convite {
       width: 100%;
       max-width: 600px;
       margin: 0 auto;
-      min-height: 100vh;
       text-align: center;
     }
 
     .capa {
       min-height: 100vh;
+      padding: 40px 25px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 40px 25px;
     }
 
     .titulo {
-      font-size: 18px;
+      font-size: 16px;
       letter-spacing: 3px;
-      margin-bottom: 25px;
       text-transform: uppercase;
+      margin-bottom: 25px;
     }
 
     .nomes {
@@ -58,9 +56,9 @@
 
     .mensagem {
       margin-top: 35px;
-      font-size: 16px;
-      line-height: 1.6;
       max-width: 450px;
+      font-size: 16px;
+      line-height: 1.7;
     }
 
     .secao {
@@ -73,16 +71,18 @@
       margin-bottom: 20px;
     }
 
+    .secao p {
+      line-height: 1.7;
+    }
+
     .botao {
       display: inline-block;
       margin-top: 25px;
       padding: 14px 25px;
-      border: none;
       border-radius: 30px;
       background: #333;
       color: white;
       text-decoration: none;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -92,36 +92,102 @@
   <main class="convite">
 
     <section class="capa">
-      <div class="titulo">Nosso casamento</div>
 
-      <h1 class="nomes">
+      <div class="titulo" id="titulo">
+        Nosso casamento
+      </div>
+
+      <h1 class="nomes" id="nomes">
         Nome &amp; Nome
       </h1>
 
-      <div class="data">
+      <div class="data" id="data">
         00 • 00 • 0000
       </div>
 
-      <p class="mensagem">
-        Estamos muito felizes em compartilhar esse momento
-        tão especial com você.
+      <p class="mensagem" id="mensagem">
+        Estamos muito felizes em compartilhar esse momento tão especial com você.
       </p>
+
     </section>
 
     <section class="secao">
-      <h2>Você é nosso convidado</h2>
 
-      <p>
-        Em breve você poderá conferir todos os detalhes
-        do nosso grande dia.
+      <h2 id="tituloSecao">
+        Você é nosso convidado
+      </h2>
+
+      <p id="textoSecao">
+        Em breve você poderá conferir todos os detalhes do nosso grande dia.
       </p>
 
-      <a href="#" class="botao">
+      <a href="#" class="botao" id="botao">
         Confirmar presença
       </a>
+
     </section>
 
   </main>
+
+  <script>
+    async function carregarConvite() {
+
+      try {
+
+        const resposta = await fetch("dados.json");
+
+        if (!resposta.ok) {
+          throw new Error("Não foi possível carregar os dados.");
+        }
+
+        const dados = await resposta.json();
+
+        if (dados.titulo) {
+          document.getElementById("titulo").textContent = dados.titulo;
+        }
+
+        if (dados.nomes) {
+          document.getElementById("nomes").textContent = dados.nomes;
+        }
+
+        if (dados.data) {
+          document.getElementById("data").textContent = dados.data;
+        }
+
+        if (dados.mensagem) {
+          document.getElementById("mensagem").textContent = dados.mensagem;
+        }
+
+        if (dados.tituloSecao) {
+          document.getElementById("tituloSecao").textContent = dados.tituloSecao;
+        }
+
+        if (dados.textoSecao) {
+          document.getElementById("textoSecao").textContent = dados.textoSecao;
+        }
+
+        if (dados.botaoTexto) {
+          document.getElementById("botao").textContent = dados.botaoTexto;
+        }
+
+        if (dados.confirmacao) {
+          document.getElementById("botao").href = dados.confirmacao;
+        }
+
+        if (dados.tituloPagina) {
+          document.title = dados.tituloPagina;
+        }
+
+      } catch (erro) {
+
+        console.log("Usando informações padrão do convite.");
+
+      }
+
+    }
+
+    carregarConvite();
+  </script>
 
 </body>
 </html>
