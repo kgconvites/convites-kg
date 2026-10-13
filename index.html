@@ -1,193 +1,147 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casamento Emilly e Alessandro</title>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: #f8f5f0; }
 
-  <title>Convite de Casamento</title>
+#capa {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f5f0;
+  cursor: pointer;
+  transition: opacity 1s ease, visibility 1s ease;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+#envelope {
+  width: min(100vw, 500px);
+  height: auto;
+  display: block;
+  transform-origin: center;
+}
 
-    body {
-      font-family: Georgia, serif;
-      background: #f8f5f0;
-      color: #333;
-    }
+#capa.abrindo #envelope {
+  animation: abrir 1.6s ease forwards;
+}
 
-    .convite {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      text-align: center;
-    }
+#capa.sumir {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 
-    .capa {
-      min-height: 100vh;
-      padding: 40px 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+@keyframes abrir {
+  0% { transform: scale(1); opacity: 1; }
+  45% { transform: scale(1.06) rotateX(8deg); }
+  100% { transform: scale(1.12); opacity: 0; }
+}
 
-    .titulo {
-      font-size: 16px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 25px;
-    }
+#convite {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
 
-    .nomes {
-      font-size: 42px;
-      font-weight: normal;
-      line-height: 1.2;
-      margin-bottom: 25px;
-    }
+#convite img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
-    .data {
-      font-size: 18px;
-      letter-spacing: 2px;
-    }
+.area {
+  position: absolute;
+  display: block;
+  background: transparent;
+  border: 0;
+}
 
-    .mensagem {
-      margin-top: 35px;
-      max-width: 450px;
-      font-size: 16px;
-      line-height: 1.7;
-    }
+#local {
+  left: 12%;
+  top: 54%;
+  width: 76%;
+  height: 5%;
+}
 
-    .secao {
-      padding: 60px 25px;
-    }
+#confirmacao {
+  left: 12%;
+  top: 61%;
+  width: 76%;
+  height: 5%;
+}
 
-    .secao h2 {
-      font-size: 28px;
-      font-weight: normal;
-      margin-bottom: 20px;
-    }
+#presentes {
+  left: 12%;
+  top: 67%;
+  width: 76%;
+  height: 5%;
+}
 
-    .secao p {
-      line-height: 1.7;
-    }
-
-    .botao {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 14px 25px;
-      border-radius: 30px;
-      background: #333;
-      color: white;
-      text-decoration: none;
-    }
-  </style>
+@media (prefers-reduced-motion: reduce) {
+  #capa, #capa.abrindo #envelope {
+    animation: none;
+    transition: none;
+  }
+}
+</style>
 </head>
-
 <body>
 
-  <main class="convite">
+<div id="capa" role="button" tabindex="0" aria-label="Abrir convite">
+  <img id="envelope" src="1.png" alt="Toque para abrir o convite">
+</div>
 
-    <section class="capa">
+<main id="convite" hidden>
+  <img src="2.png" alt="Convite de casamento de Emilly e Alessandro">
 
-      <div class="titulo" id="titulo">
-        Nosso casamento
-      </div>
+  <a class="area" id="local"
+     href="https://maps.app.goo.gl/V7qybwPfnPVQTwqT7?g_st=ic"
+     target="_blank" rel="noopener" aria-label="Ver localização"></a>
 
-      <h1 class="nomes" id="nomes">
-        Nome &amp; Nome
-      </h1>
+  <span class="area" id="confirmacao"
+        aria-label="Confirmação de presença"></span>
 
-      <div class="data" id="data">
-        00 • 00 • 0000
-      </div>
+  <a class="area" id="presentes"
+     href="https://convidapay.lovable.app/l/casamentoemillyealessandro"
+     target="_blank" rel="noopener" aria-label="Lista de presentes"></a>
+</main>
 
-      <p class="mensagem" id="mensagem">
-        Estamos muito felizes em compartilhar esse momento tão especial com você.
-      </p>
+<script>
+const capa = document.getElementById('capa');
+const convite = document.getElementById('convite');
+let iniciado = false;
 
-    </section>
+function abrirConvite() {
+  if (iniciado) return;
+  iniciado = true;
 
-    <section class="secao">
+  capa.classList.add('abrindo');
 
-      <h2 id="tituloSecao">
-        Você é nosso convidado
-      </h2>
+  setTimeout(() => {
+    convite.hidden = false;
+    capa.classList.add('sumir');
+    window.scrollTo(0, 0);
+  }, 1600);
+}
 
-      <p id="textoSecao">
-        Em breve você poderá conferir todos os detalhes do nosso grande dia.
-      </p>
+capa.addEventListener('click', abrirConvite);
 
-      <a href="#" class="botao" id="botao">
-        Confirmar presença
-      </a>
-
-    </section>
-
-  </main>
-
-  <script>
-    async function carregarConvite() {
-
-      try {
-
-        const resposta = await fetch("dados.json");
-
-        if (!resposta.ok) {
-          throw new Error("Não foi possível carregar os dados.");
-        }
-
-        const dados = await resposta.json();
-
-        if (dados.titulo) {
-          document.getElementById("titulo").textContent = dados.titulo;
-        }
-
-        if (dados.nomes) {
-          document.getElementById("nomes").textContent = dados.nomes;
-        }
-
-        if (dados.data) {
-          document.getElementById("data").textContent = dados.data;
-        }
-
-        if (dados.mensagem) {
-          document.getElementById("mensagem").textContent = dados.mensagem;
-        }
-
-        if (dados.tituloSecao) {
-          document.getElementById("tituloSecao").textContent = dados.tituloSecao;
-        }
-
-        if (dados.textoSecao) {
-          document.getElementById("textoSecao").textContent = dados.textoSecao;
-        }
-
-        if (dados.botaoTexto) {
-          document.getElementById("botao").textContent = dados.botaoTexto;
-        }
-
-        if (dados.confirmacao) {
-          document.getElementById("botao").href = dados.confirmacao;
-        }
-
-        if (dados.tituloPagina) {
-          document.title = dados.tituloPagina;
-        }
-
-      } catch (erro) {
-
-        console.log("Usando informações padrão do convite.");
-
-      }
-
-    }
-
-    carregarConvite();
-  </script>
+capa.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    abrirConvite();
+  }
+});
+</script>
 
 </body>
 </html>
